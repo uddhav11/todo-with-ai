@@ -1,0 +1,106 @@
+// // import dotenv from "dotenv";
+
+// import * as dotenv from 'dotenv';
+// dotenv.config();
+
+// import express from "express";
+// import mongoose from "mongoose";
+// import cors from "cors";
+// import cookieParser from "cookie-parser";
+// import { Server } from "socket.io";
+// import http from "http";
+// import passport from "passport";
+// import session from "express-session";
+// import authRoutes from "./routes/authRoutes.js";
+// import taskRoutes from "./routes/taskRoutes.js";
+// import aiRoutes from "./routes/aiRoutes.js";
+
+// // dotenv.config();
+
+// const app = express();
+
+// // Middleware
+// app.use(
+//   cors({
+//     origin: "http://localhost:5173",
+//     credentials: true,
+//   })
+// );
+// app.use(express.json());
+// app.use(cookieParser());
+// app.use(session({
+//   secret: process.env.SESSION_SECRET,
+//   resave: false,
+//   saveUninitialized: false,
+// }))
+// app.use(passport.initialize());
+// app.use(passport.session());
+
+// // Database Connection
+// mongoose
+//   .connect(process.env.MONGODB_URI)
+//   .then(() => console.log("MongoDB Connected"))
+//   .catch((err) => console.log(err));
+
+// // Routes
+// app.use("/api/auth",authRoutes);
+// app.use("/api/tasks", taskRoutes);
+// app.use("/api/ai", aiRoutes);
+
+// export default app;
+
+import * as dotenv from "dotenv";
+dotenv.config();
+
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import session from "express-session";
+import passport from "passport";
+import "./config/passport.js"; // ✅ Import Passport strategies
+
+import authRoutes from "./routes/authRoutes.js";
+import taskRoutes from "./routes/taskRoutes.js";
+import aiRoutes from "./routes/aiRoutes.js";
+
+const app = express();
+
+// Middleware
+app.use(
+  cors({
+    origin: "http://localhost:5173", 
+    credentials: true,
+  })
+);
+
+// app.use(cors())
+
+app.use(express.json());
+app.use(cookieParser());
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // Set to true in production with HTTPS
+      httpOnly: true,
+    },
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Database Connection
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => console.log("MongoDB Connected"))
+  .catch((err) => console.log(err));
+
+// Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/tasks", taskRoutes);
+app.use("/api/ai", aiRoutes);
+
+export default app;
