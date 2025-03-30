@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTasks, deleteTask, selectTask } from "../redux/taskSlice";
+import { fetchTasks, deleteTask, selectTask, createTask, updateTask } from "../redux/taskSlice";
 import TaskForm from "./TaskForm";
+import socket from "../lib/socket";
 
 const TaskList = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,38 @@ const TaskList = () => {
       dispatch(fetchTasks());
     }
   }, [dispatch, token]);
+
+
+  useEffect(() =>{
+    socket.connect()
+
+    const handelTaskUpdate= ({task, action}) => {
+      switch(action){
+        case 'created':
+          dispatch(createTask(task));
+          break;
+        case 'updated':
+          dispatch(updateTask(task));
+          break;
+        case 'deleted':
+          dispatch(deleteTask(task._id))
+          break;
+        default:
+          console.log('Unknown task action: ', action)
+      }
+    }
+
+    socket.on('taskUpdate', handelTaskUpdate)
+
+    tasks.forEach(task => {
+      socket.emit('joinTaskRoom', task._id)
+    })
+
+    return() => {
+      socket.off('taskUpdate', handelTaskUpdate)
+      socket.disconnect();
+    }
+  }, [dispatch, tasks])
 
 
 

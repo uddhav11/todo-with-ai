@@ -17,10 +17,16 @@ const io= new Server(httpServer, {
 io.on('connection', (socket) => {
     console.log('user conncted', socket.id) 
 
+    socket.on('joinTaskRoom', (taskId) => {
+        socket.json(`task_${taskId}`)
+    })
+
     socket.on('disconnect', () => {
         console.log('user disconnected', socket.id)
     })
 })
+
+app.set('io', io)
 
 
 cron.schedule('0 * * * *', () => {
