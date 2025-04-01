@@ -8,6 +8,9 @@ const initialState = {
   loading: false,
   error: null,
   selectedTask: null,
+  aiSuggestion: "",
+  particularAiSuggestion: {},
+  isGeneratingAi: false,
 };
 
 // Fetch Tasks
@@ -16,11 +19,13 @@ export const fetchTasks = createAsyncThunk(
   async (_, { getState, rejectWithValue }) => {
     try {
       const token = getState().auth?.token;
+
       if (!token) throw new Error("Authentication token not found");
 
       const response = await axios.get("/api/tasks/gettasks", {
         headers: { Authorization: `Bearer ${token}` },
       });
+
 
       return response.data.tasks;
     } catch (error) {
@@ -38,7 +43,7 @@ export const createTask = createAsyncThunk(
     try {
       const token = getState().auth?.token;
       if (!token) throw new Error("Authentication token not found");
-
+      console.log('this is create task: ', taskData)
       const response = await axios.post("/api/tasks/create", taskData, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -64,7 +69,7 @@ export const updateTask = createAsyncThunk(
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log('this is updated task', response.data.task)
+      console.log("this is updated task", response.data.task);
 
       return response.data.task;
     } catch (error) {
@@ -96,6 +101,48 @@ export const deleteTask = createAsyncThunk(
   }
 );
 
+export const getAISuggestions = createAsyncThunk(
+  "tasks/aisuggestion",
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const token = getState().auth?.token;
+      if (!token) throw new Error("Authincation token not found");
+
+      const response = await axios.get("/api/tasks/tips", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data.suggestion;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to get Ai suggestions"
+      );
+    }
+  }
+);
+
+
+export const getParticularSuggestions= createAsyncThunk(
+  '/tasks/tip',
+  async(id, {getState, rejectWithValue}) => {
+    try {
+      const token= getState().auth?.token;
+      if(!token) throw new Error("Authincation token not found")
+
+      const response= await axios.get(`/api/tasks/tip/${id}`, {
+        headers: {Authorization: `Bearer ${token}`}
+      })
+      console.log('particular ai response', response.data.suggestion)
+      return {id, suggestion: response.data.suggestion}
+    } catch (error) {
+      console.log('particular ai suggestions error: ', error)
+      return rejectWithValue(
+        error.response?.data?.message || "Failed in get particular ai suggestions"
+      )
+    }
+  }
+)
+
+
 // Task Slice
 const taskSlice = createSlice({
   name: "tasks",
@@ -106,6 +153,17 @@ const taskSlice = createSlice({
     },
     clearSelectedTasks: (state) => {
       state.selectedTask = null;
+    },
+    socketAddTask: (state, action) => {
+      state.tasks.unshift(action.payload);
+    },
+    socketUpdateTask: (state, action) => {
+      state.tasks = state.tasks.map((task) =>
+        task._id === action.payload._id ? action.payload : task
+      );
+    },
+    socketRemoveTask: (state, action) => {
+      state.tasks = state.tasks.filter((task) => task._id !== action.payload);
     },
   },
   extraReducers: (builder) => {
@@ -169,9 +227,41 @@ const taskSlice = createSlice({
       .addCase(deleteTask.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      .addCase(getAISuggestions.pending, (state) => {
+        state.isGeneratingAi = true;
+        state.error = null;
+      })
+      .addCase(getAISuggestions.fulfilled, (state, action) => {
+        state.isGeneratingAi = false;
+        state.aiSuggestion = action.payload;
+      })
+      .addCase(getAISuggestions.rejected, (state, action) => {
+        state.isGeneratingAi = false;
+        state.error = action.payload;
+      })
+
+      .addCase(getParticularSuggestions.pending, (state) => {
+        state.isGeneratingAi = true;
+        state.error = null;
+      })
+      .addCase(getParticularSuggestions.fulfilled, (state, action) => {
+        state.isGeneratingAi = false;
+        state.particularAiSuggestion[action.payload.id]= action.payload.suggestion;
+      })
+      .addCase(getParticularSuggestions.rejected, (state, action) => {
+        state.isGeneratingAi = false;
+        state.error = action.payload;
       });
   },
 });
 
-export const { selectTask, clearSelectedTasks } = taskSlice.actions;
+export const {
+  selectTask,
+  clearSelectedTasks,
+  socketAddTask,
+  socketRemoveTask,
+  socketUpdateTask,
+} = taskSlice.actions;
 export default taskSlice.reducer;

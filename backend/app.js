@@ -62,7 +62,7 @@ import "./config/passport.js"; // ✅ Import Passport strategies
 
 import authRoutes from "./routes/authRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
-import aiRoutes from "./routes/aiRoutes.js";
+// import aiRoutes from "./routes/aiRoutes.js";
 
 const app = express();
 
@@ -101,6 +101,6 @@ mongoose
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/tasks", taskRoutes);
-app.use("/api/ai", aiRoutes);
+// app.use("/api/ai", aiRoutes);
 
 export default app;

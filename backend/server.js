@@ -10,19 +10,33 @@ const httpServer= createServer(app)
 const io= new Server(httpServer, {
     cors: {
         origin: "http://localhost:5173",
-        methods: ["GET", "POST"]
+        methods: ["GET", "POST"],
+        credentials: true,
     }
 })
 
-io.on('connection', (socket) => {
-    console.log('user conncted', socket.id) 
+const userSockets= {}
 
-    socket.on('joinTaskRoom', (taskId) => {
-        socket.json(`task_${taskId}`)
-    })
+io.on('connection', (socket) => {
+    // console.log('user conncted', socket.id) 
+
+    // socket.on('joinTaskRoom', (taskId) => {
+    //     socket.join(`task_${taskId}`)
+    //     console.log(`User ${socket.id} joinde room task_${taskId}`)
+    // })
+
+    // socket.on('disconnect', () => {
+    //     console.log('user disconnected', socket.id)
+    // })
+
+    const userId= socket.handshake.auth.userId;
+    if(userId){
+        socket.join(`user_${userId}`)
+        userSockets[userId]= socket.id;
+    }
 
     socket.on('disconnect', () => {
-        console.log('user disconnected', socket.id)
+        if(userId) delete userSockets[userId]
     })
 })
 
