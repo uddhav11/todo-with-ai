@@ -221,7 +221,8 @@ const LandingPage = () => {
         <div className="relative max-w-5xl mx-auto rounded-xl sm:rounded-2xl overflow-hidden border border-gray-800 shadow-lg sm:shadow-2xl shadow-purple-900/20">
           <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 to-indigo-900/30"></div>
           <img
-            src="https://placehold.co/1000x600/1a1a2e/8b5cf6?text=NeuroTask+AI+Dashboard"
+            // src="https://placehold.co/1000x600/1a1a2e/8b5cf6?text=NeuroTask+AI+Dashboard"
+            src='landing.png'
             alt="AI Task Manager Dashboard"
             className="w-full h-auto relative z-0"
           />
@@ -465,8 +466,9 @@ const LandingPage = () => {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://github.com/uddhav11?tab=repositories"
                 className="text-gray-400 hover:text-purple-400 transition"
+                target="_blank" rel="noopener noreferrer"
               >
                 <span className="sr-only">GitHub</span>
                 <svg
@@ -482,8 +484,9 @@ const LandingPage = () => {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://www.linkedin.com/in/uddhav-adhikari-20a0262a8/"
                 className="text-gray-400 hover:text-purple-400 transition"
+                target="_blank" rel="noopener noreferrer"
               >
                 <span className="sr-only">LinkedIn</span>
                 <svg

@@ -177,9 +177,17 @@ import { FiLogOut, FiUser, FiCalendar } from "react-icons/fi";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, token, loading } = useSelector((state) => state.auth);
+  const localUser= JSON.parse(localStorage.getItem('user'))
+  let { user, token, loading } = useSelector((state) => state.auth);
+
+
 
   useEffect(() => {
+    // const localToken= localStorage.getItem('token')
+    // const localUser= JSON.parse(localStorage.getItem('user'))
+
+
+
     // Extract token & user from URL (Google OAuth login)
     const urlParams = new URLSearchParams(window.location.search);
     const tokenFromURL = urlParams.get("token");
@@ -193,14 +201,22 @@ const Dashboard = () => {
 
       // Remove token from URL
       window.history.replaceState({}, document.title, "/dashboard");
-    } else if (!user && token) {
+    
+    
+    }else if(!user && token) {
       dispatch(getProfile()); // Fetch profile if user is missing
-    }
-  }, [dispatch, token, user]);
+    } 
+  }, );
+// }, [dispatch, token, user]);
+
+  // useEffect(() => {
+  //   dispatch(getProfile())
+  // })
+
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    navigate("/login");
+    navigate("/");
   };
 
   if (loading) return (

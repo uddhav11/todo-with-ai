@@ -908,12 +908,12 @@ const TaskList = () => {
         {/* AI Suggestions Panel */}
         <div className="mb-8 bg-gray-800 rounded-xl shadow-lg border border-gray-700 overflow-hidden ">
           <div className="bg-gradient-to-r from-purple-900/50 to-indigo-900/50 p-4">
-            <h2 className="text-lg font-semibold text-white flex items-center">
+            <h2 className="text-lg font-semibold text-white flex items-center  justify-center">
               <FiZap className="mr-2" />
               AI Productivity Assistant
             </h2>
           </div>
-          <div className="p-4">
+          <div className="p-4 flex justify-center">
             <button
               onClick={() => dispatch(getAISuggestions())}
               disabled={isGeneratingAI || tasks.length === 0}
