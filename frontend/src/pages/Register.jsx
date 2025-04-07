@@ -67,7 +67,7 @@
 //         <button type="submit">Register</button>
 //       </form>
 
-//       <GoogleOAuthProvider clientId="210900703088-ifehcpj6llsqcgi1i4l1l99856fp92oq.apps.googleusercontent.com">
+//       <GoogleOAuthProvider clientId="">
 //         <GoogleLogin
 //           onSuccess={handleGoogleRegister}
 //           onError={() => console.error("Google register error")}
