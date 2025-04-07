@@ -82,7 +82,7 @@ const __dirname = path.dirname(__filename);
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: process.env.FRONTEND_URL || "https://todo-with-ai-alpha.vercel.app",
     methods: ["GET", "POST"],
     credentials: true,
   },
