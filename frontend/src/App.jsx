@@ -14,21 +14,21 @@ function App() {
   return (
     <>
       <Router>
-        {user ? (
-            <Navigate to="/dashboard"/>
-          ) : (
-            <Navigate to="/"/>
-          )}
-        <Routes>
-          
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="*" element={<Navigate to="/" />} />
+  <Routes>
+    {user ? (
+      <Route path="/" element={<Navigate to="/dashboard" />} />
+    ) : (
+      <Route path="/dashboard" element={<Navigate to="/" />} />
+    )}
 
-        </Routes>
-      </Router>
+    <Route path="/" element={<LandingPage />} />
+    <Route path="/login" element={<Login />} />
+    <Route path="/register" element={<Register />} />
+    <Route path="/dashboard" element={<Dashboard />} />
+    <Route path="*" element={<Navigate to="/" />} />
+  </Routes>
+</Router>
+
     </>
   );
 }
