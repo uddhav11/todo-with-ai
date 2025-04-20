@@ -213,13 +213,7 @@ const Dashboard = () => {
   //   dispatch(getProfile())
   // })
 
-  useEffect(() => {
-    console.log("User in useEffect:", user);
-    console.log("Token in useEffect:", token);
-    console.log("LocalStorage user:", localStorage.getItem("user"));
-    console.log("URL token param:", new URLSearchParams(window.location.search).get("token"));
-    console.log("URL user param:", new URLSearchParams(window.location.search).get("user"));
-  }, [user, token]);
+;
   
 
 

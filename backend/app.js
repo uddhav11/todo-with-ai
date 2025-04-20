@@ -120,6 +120,8 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import passport from "passport";
 import "./config/passport.js";
+import MongoStore from 'connect-mongo';
+
 
 import authRoutes from "./routes/authRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
@@ -141,6 +143,10 @@ app.use(
     secret: process.env.SESSION_SECRET || "default_secret",
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI,
+      collectionName: 'sessions',
+    }),
     cookie: {
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
