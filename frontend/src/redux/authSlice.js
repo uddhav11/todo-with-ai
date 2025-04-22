@@ -206,7 +206,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:4000";
+axios.defaults.baseURL = "https://todo-with-ai.onrender.com";
 axios.defaults.withCredentials = true;
 
 const initialState = {
