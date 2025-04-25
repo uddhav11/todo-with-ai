@@ -17,15 +17,32 @@ import LandingPage from "./pages/LandingPage";
 function AppRoutes() {
   const navigate = useNavigate();
   const location = useLocation();
-  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
+    let user = null;
+    try {
+      const storedUser = localStorage.getItem("user");
+      user = storedUser ? JSON.parse(storedUser) : null;
+    } catch (error) {
+      console.error("Error parsing user from localStorage:", error);
+      localStorage.removeItem("user");
+    }
+
     if (user && location.pathname === "/") {
       navigate("/dashboard");
     } else if (!user && location.pathname === "/dashboard") {
       navigate("/");
     }
-  }, [user, location.pathname, navigate]);
+  }, [location.pathname, navigate]);
+
+  const user =
+    (() => {
+      try {
+        return JSON.parse(localStorage.getItem("user"));
+      } catch {
+        return null;
+      }
+    })();
 
   return (
     <Routes>
