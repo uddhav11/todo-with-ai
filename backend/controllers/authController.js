@@ -78,13 +78,15 @@ export const login = async (req, res) => {
 
 export const googleCallback = (req, res) => {
   if (!req.user) {
-    return res.redirect("http://localhost:5173/login?error=user_not_found");
+    return res.redirect("https://todo-with-ai-alpha.vercel.app/login?error=user_not_found");
   }
   const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, {
     expiresIn: "7d",
   });
-  res.redirect(`http://localhost:5173/dashboard?token=${token}`);
+  res.redirect(`https://todo-with-ai-alpha.vercel.app/dashboard?token=${token}`);
 };
+
+
 
 export const Logout = (req, res) => {
   try {

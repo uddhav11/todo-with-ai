@@ -128,13 +128,28 @@ import taskRoutes from "./routes/taskRoutes.js";
 
 const app = express();
 
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL || "https://todo-with-ai-alpha.vercel.app",
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: process.env.FRONTEND_URL || "https://todo-with-ai-alpha.vercel.app",
+//     credentials: true,
+//   })
+// );
 
+
+const allowedOrigins = ['https://todo-with-ai-alpha.vercel.app'];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // important if you are using cookies or Authorization headers
+};
+
+app.use(cors(corsOptions));
 
 
 app.use(express.json());
