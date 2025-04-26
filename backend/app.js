@@ -181,7 +181,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGODB_URI, {
+    ssl: true,                // <- this is important
+    sslValidate: true    
+  })
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log("MongoDB connection error:", err));
 
