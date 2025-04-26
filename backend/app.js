@@ -136,7 +136,9 @@ const app = express();
 // );
 
 
-const allowedOrigins = ['https://todo-with-ai-alpha.vercel.app'];
+
+const allowedOrigins = ['https://todo-with-ai-alpha.vercel.app', 'http://localhost:5173'];
+
 
 const corsOptions = {
   origin: function (origin, callback) {

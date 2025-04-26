@@ -79,11 +79,12 @@ import { fileURLToPath } from "url";
 const PORT = process.env.PORT || 4000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const production_frontend_url= process.env.FRONTEND_URL || "https://todo-with-ai-alpha.vercel.app";
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.FRONTEND_URL || "https://todo-with-ai-alpha.vercel.app",
+    origin: [production_frontend_url, "http://localhost:5173"],
     methods: ["GET", "POST"],
     credentials: true,
   },
