@@ -128,12 +128,6 @@ import taskRoutes from "./routes/taskRoutes.js";
 
 const app = express();
 
-// app.use(
-//   cors({
-//     origin: process.env.FRONTEND_URL || "https://todo-with-ai-alpha.vercel.app",
-//     credentials: true,
-//   })
-// );
 
 
 
@@ -182,8 +176,7 @@ app.use(passport.session());
 
 mongoose
   .connect(process.env.MONGODB_URI, {
-    ssl: true,                // <- this is important
-    sslValidate: true    
+       
   })
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log("MongoDB connection error:", err));
