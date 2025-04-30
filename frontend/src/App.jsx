@@ -18,31 +18,21 @@ function AppRoutes() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    let user = null;
+  const user = (() => {
     try {
-      const storedUser = localStorage.getItem("user");
-      user = storedUser ? JSON.parse(storedUser) : null;
-    } catch (error) {
-      console.error("Error parsing user from localStorage:", error);
-      localStorage.removeItem("user");
+      return JSON.parse(localStorage.getItem("user"));
+    } catch {
+      return null;
     }
+  })();
 
+  useEffect(() => {
     if (user && location.pathname === "/") {
       navigate("/dashboard");
-    } else if (!user && location.pathname === "/dashboard") {
-      navigate("/");
+    } else{
+      navigate('/')
     }
-  }, [location.pathname, navigate]);
-
-  const user =
-    (() => {
-      try {
-        return JSON.parse(localStorage.getItem("user"));
-      } catch {
-        return null;
-      }
-    })();
+  }, [location, navigate, user]);
 
   return (
     <Routes>
@@ -51,7 +41,7 @@ function AppRoutes() {
       <Route path="/register" element={<Register />} />
       <Route
         path="/dashboard"
-        element={user ? <Dashboard /> : <Navigate to="/" />}
+        element={user ? <Dashboard /> : <Navigate to="/" replace />}
       />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
