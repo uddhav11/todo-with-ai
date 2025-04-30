@@ -26,13 +26,13 @@ function AppRoutes() {
     }
   })();
 
-  // useEffect(() => {
-  //   if (user && location.pathname === "/") {
-  //     navigate("/dashboard");
-  //   } else{
-  //     navigate('/')
-  //   }
-  // }, [location, navigate, user]);
+  useEffect(() => {
+    if (user && location.pathname === "/") {
+      navigate("/dashboard");
+    } else{
+      navigate('/')
+    }
+  }, [location, navigate, user]);
 
   return (
     <Routes>
@@ -41,7 +41,7 @@ function AppRoutes() {
       <Route path="/register" element={<Register />} />
       <Route
         path="/dashboard"
-        element={user ? <Dashboard /> : <Navigate to="/" replace />}
+        element={<Dashboard />}
       />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
