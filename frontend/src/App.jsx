@@ -26,13 +26,13 @@ function AppRoutes() {
     }
   })();
 
-  useEffect(() => {
-    if (user && location.pathname === "/") {
-      navigate("/dashboard");
-    } else{
-      navigate('/')
-    }
-  }, [location, navigate, user]);
+  // useEffect(() => {
+  //   if (user && location.pathname === "/") {
+  //     navigate("/dashboard");
+  //   } else{
+  //     navigate('/')
+  //   }
+  // }, [location, navigate, user]);
 
   return (
     <Routes>
