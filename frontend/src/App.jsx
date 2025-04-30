@@ -14,25 +14,33 @@ import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import LandingPage from "./pages/LandingPage";
 
+// Helper function to get user safely
+const getUser = () => {
+  try {
+    return JSON.parse(localStorage.getItem("user"));
+  } catch {
+    return null;
+  }
+};
+
+// Protected Route wrapper
+function PrivateRoute({ children }) {
+  const user = getUser();
+  return user ? children : <Navigate to="/" />;
+}
+
 function AppRoutes() {
   const navigate = useNavigate();
   const location = useLocation();
-
-  const user = (() => {
-    try {
-      return JSON.parse(localStorage.getItem("user"));
-    } catch {
-      return null;
-    }
-  })();
+  const user = getUser();
 
   useEffect(() => {
     if (user && location.pathname === "/") {
       navigate("/dashboard");
-    } else{
-      navigate('/')
+    } else if (!user && location.pathname === "/dashboard") {
+      navigate("/");
     }
-  }, [location, navigate, user]);
+  }, [location.pathname, navigate, user]);
 
   return (
     <Routes>
@@ -41,7 +49,11 @@ function AppRoutes() {
       <Route path="/register" element={<Register />} />
       <Route
         path="/dashboard"
-        element={<Dashboard />}
+        element={
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        }
       />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
