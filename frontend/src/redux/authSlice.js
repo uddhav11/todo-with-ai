@@ -205,9 +205,12 @@
 
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { use } from "passport";
+import { useNavigate } from "react-router-dom";
 
 axios.defaults.baseURL = "https://todo-with-ai.onrender.com";
 axios.defaults.withCredentials = true;
+const navigate= useNavigate();
 
 const initialState = {
   user: null,
@@ -301,6 +304,7 @@ export const logoutUser = createAsyncThunk(
       });
 
       removeUserFromLocalStorage();
+      navigate('/')
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "Logout failed");
