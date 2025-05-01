@@ -304,7 +304,14 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     dispatch(loginUser({ email, password }));
-    navigate('/dashboard');
+    if(loading){
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 5000); 
+    }  else{
+      navigate('/dashboard');
+    }
+
   };
 
   const handleGoogleLogin = () => {
